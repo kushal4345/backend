@@ -21,3 +21,5 @@ const databaseConnection = async () => {
 };
 
 databaseConnection();
+
+module.exports = app;
