@@ -1,0 +1,27 @@
+{
+  "name": "my-backend-app",
+  "version": "1.0.0",
+  "description": "A backend application for authentication",
+  "scripts": {
+  "start": "node ./api/app.js",
+  "dev": "nodemon ./api/app.js"
+},
+
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.3",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=14.x"
+  },
+  "author": "Your Name",
+  "license": "ISC"
+}
