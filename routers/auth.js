@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const User = require('../backend/schema.js');
-const validation = require('../backend/helps.js');
+const User = require('../schema.js');
+const validation = require('../helps.js');
 const cors = require('cors');
 
 // Middleware

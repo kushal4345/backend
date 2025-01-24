@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const data = require('../backend/database.js');
-const router = require('../routers/auth.js');
+const data = require('./database.js');
+const router = require('./routers/auth.js');
 
 
 router.use(express.json());
