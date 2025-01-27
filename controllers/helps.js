@@ -7,9 +7,6 @@ const validation = (req) => {
         throw new Error("Email is not valid");
     }
 
-    if (password !== confirmPassword) {
-        throw new Error("Password and ConfirmPassword do not match");
-    }
 
     if (
         !validate.isStrongPassword(password, {
@@ -23,5 +20,6 @@ const validation = (req) => {
         throw new Error("Password is not strong");
     }
 };
+
 
 module.exports = validation;

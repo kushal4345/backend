@@ -1,84 +1,64 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const User = require('../schema.js');
-const validation = require('../helps.js');
+const User = require('../Database/schema.js');
+const validation = require('../controllers/helps.js');
 const cors = require('cors');
+const jwt  = require('jsonwebtoken');
+const parser = require('cookie-parser');
+
 
 // Middleware
 router.use(cors());
 router.use(express.json());
+router.use(parser());
 
 // Signup Route
 router.post('/signup', async function (req, res) {
     try {
-        console.log(req.body); // Log the incoming request body
-
-        // Validate request body
+        console.log(req.body); 
         validation(req);
+        const { userName, email, password } = req.body;
 
-        // Extract data from request body
-        const { userName, email, password, confirmPassword } = req.body;
-
-        // Check if confirmPassword is provided
-        if (!confirmPassword) {
-            throw new Error("ConfirmPassword is required");
-        }
-
-        // Check if password and confirmPassword match
-        if (password !== confirmPassword) {
-            throw new Error("Password and ConfirmPassword do not match");
-        }
-
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create a new user
         const user = new User({
             userName,
             email,
             password: hashedPassword,
         });
-
-        // Save the user to the database
         await user.save();
-
-        // Send success response
         res.status(201).send({ message: "User created successfully" });
     } catch (error) {
-        console.error(error); // Log the error for debugging
+        console.error(error); 
         return res.status(400).send({ message: error.message });
     }
 });
 
-// Login Route
+
 router.post('/login', async function (req, res) {
     try {
-        console.log(req.body); // Log the incoming request body
-
-        // Extract data from request body
+        console.log(req.body); 
         const { email, password } = req.body;
-
-        // Find the user with the given email
         const user = await User.findOne({ email });
 
-        // Check if user exists
         if (!user) {
             throw new Error("User not found");
         }
 
-        // Compare the password
         const isMatch = await bcrypt.compare(password, user.password);
 
-        // Check if password is correct
-        if (!isMatch) {
+         
+        if (isMatch) {
+        const token =  await jwt.sign({_id: user._id },"kushal@126");
+        console.log(token);
+        res.cookie('token',token);
+        res.status(200).send({ message: "Login successful" });
+        }
+        else{
             throw new Error("Invalid credentials");
         }
-
-        // Send success response
-        res.status(200).send({ message: "Login successful" });
     } catch (error) {
-        console.error(error); // Log the error for debugging
+        console.error(error); 
         return res.status(400).send({ message: error.message });
     }
 });
